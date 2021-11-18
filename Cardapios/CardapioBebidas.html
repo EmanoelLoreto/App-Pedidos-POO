@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="../Index.js"></script>
+  <script type="module" src="../Index.js"></script>
+  <link rel="stylesheet" href="CardapioBebidas.css">
+  <title>App de Pedidos</title>
+</head>
+<body>
+  <div class="content">
+    <header>
+      <div class="div-nome-header">Cardápio de comida</div>
+      <nav>
+        <ul>
+          <a href="/AppPedidos/Cardapios/CardapioComidas.html">cardápio de comida</a>
+          <a href="/AppPedidos/Cardapios/CardapioBebidas.html">cardápio de bebida</a>
+          <a href="/AppPedidos/Cadastros/CadastroComidas.html">cadastros</a>
+        </ul>
+      </nav>
+      <a href="/AppPedidos/ListaPedidos/ListaPedidos.html" class="a-pedido">pedidos</a>
+    </header>
+
+    <main>
+      <div id="table-cardapio-bebida"/>
+    </main>
+
+    <footer />
+  </div>
+  <script>
+    function excluirBebida(codigo) {
+      let dadosBebida = JSON.parse(localStorage.getItem("dadosBebida"));
+
+      const indexBebida = dadosBebida.findIndex(bebida => bebida.codigo == codigo);
+      if (indexBebida > -1) {
+        dadosBebida.splice(indexBebida, 1);
+        localStorage.setItem("dadosBebida", JSON.stringify(dadosBebida));
+        alert("Bebida removida com sucesso!");
+        renderizarTabela()
+      }
+    }
+
+    function renderizarTabela() {
+      const tableCardapio = document.getElementById('table-cardapio-bebida');
+      const dadosBebida = JSON.parse(localStorage.getItem("dadosBebida"));
+
+      
+      if (dadosBebida === null || dadosBebida.length === 0) {
+        tableCardapio.innerHTML = '<h1>Não há nada no cardápio.</h1>'
+        document.getElementsByTagName('main')[0].style.justifyContent = 'center';
+      } else {
+        tableCardapio.innerHTML = `
+          <table>
+            <thead>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Valor unitário</th>
+              <th>Data de validade</th>
+              <th>Litros</th>
+              <th>Tipo</th>
+              <th>Excluir</th>
+              </thead>
+            <tbody>
+              ${dadosBebida.map(bebida => {
+                  return `
+                    <tr>
+                      <td>${bebida.codigo}</td>
+                      <td>${bebida.nome ? bebida.nome : '-'}</td>
+                      <td>${bebida.descricao ? bebida.descricao : '-'}</td>
+                      <td>${bebida.valorUnitario ? 'R$ ' + bebida.valorUnitario : '-'}</td>
+                      <td>${bebida.dataValidade ? bebida.dataValidade : '-'}</td>
+                      <td>${bebida.litro ? bebida.litro + 'L' : '-'}</td>
+                      <td>${bebida.tipo ? bebida.tipo : '-'}</td>
+                      <td onClick="excluirBebida(${bebida.codigo})">X</td>
+                    </tr>
+                  `
+                }).join('')
+              }
+            </tbody>
+          </table>
+        `
+      }
+    }
+
+    renderizarTabela()
+  </script>
+</body>
+</html>

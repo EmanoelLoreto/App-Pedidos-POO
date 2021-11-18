@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="../Index.js"></script>
+  <link rel="stylesheet" href="ListaPedidos.css">
+  <title>App de Pedidos</title>
+</head>
+<body>
+  <div class="content">
+    <header>
+      <div class="div-nome-header">Lista de pedidos</div>
+      <nav>
+        <ul>
+          <a href="/AppPedidos/Cardapios/CardapioComidas.html">Cardápio de comida</a>
+          <a href="/AppPedidos/Cardapios/CardapioBebidas.html">Cardápio de bebida</a>
+          <a href="/AppPedidos/Cadastros/CadastroComidas.html">cadastros</a>
+        </ul>
+      </nav>
+      <a href="/AppPedidos/ListaPedidos/ListaPedidos.html" class="a-pedido">pedidos</a>
+    </header>
+
+    <main>
+      <div id="table-lista-pedido"/>
+    </main>
+
+    <footer />
+  </div>
+  <script>
+    const dadosPedido = JSON.parse(localStorage.getItem("dadosPedido"));
+    const dadosComida = JSON.parse(localStorage.getItem('dadosComida'));
+    const dadosBebida = JSON.parse(localStorage.getItem('dadosBebida'));
+
+    function excluirPedido(codigo) {
+      let dadosPedido = JSON.parse(localStorage.getItem("dadosPedido"));
+
+      const indexPedido = dadosPedido.findIndex(pedido => pedido.numeroPedido == codigo);
+      if (indexPedido > -1) {
+        dadosPedido.splice(indexPedido, 1);
+        localStorage.setItem("dadosPedido", JSON.stringify(dadosPedido));
+        alert("Pedido removido com sucesso!");
+        renderizarTabela()
+      }
+    }
+
+    function buscarNomeComida(codigos) {
+      if (codigos.split(',').length > 1) {
+        let nomes = [];
+        codigos.split(',').forEach(elementCodigo => {
+          nomes.push(dadosComida.find((elementComida) => elementComida.codigo === elementCodigo).nome)
+        });
+
+        return nomes.join(', ')
+      } else {
+        return dadosComida.find((element) => element.codigo === codigos).nome
+      }
+    }
+
+    function buscarNomeBebida(codigos) {
+      if (codigos.split(',').length > 1) {
+        let nomes = [];
+        codigos.split(',').forEach(elementCodigo => {
+          nomes.push(dadosBebida.find((elementBebida) => elementBebida.codigo === elementCodigo).nome)
+        });
+
+        return nomes.join(', ')
+      } else {
+        return dadosBebida.find((element) => element.codigo === codigos).nome
+      }
+    }
+
+    function calcularTotalPedido(pedido) {
+      let totalComidas = 0;
+      pedido.comidas.split(',').forEach((elementCodigo, index) => {
+        totalComidas += Number(dadosComida.find((elementComida) => elementComida.codigo === elementCodigo).valorUnitario) * Number(pedido.quantidadeComidas.split(',')[index])
+      })
+
+      let totalBebidas = 0;
+      pedido.bebidas.split(',').forEach((elementCodigo, index) => {
+        totalBebidas += Number(dadosBebida.find((elementBebida) => elementBebida.codigo === elementCodigo).valorUnitario) * Number(pedido.quantidadeBebidas.split(',')[index])
+      })
+
+      return parseFloat(totalComidas + totalBebidas);
+    }
+
+    function renderizarTabela() {
+      const tableLista = document.getElementById('table-lista-pedido');
+    
+      if (dadosPedido === null || dadosPedido.length === 0) {
+        tableLista.innerHTML = '<h1>Não há pedidos.</h1>'
+        document.getElementsByTagName('main')[0].style.justifyContent = 'center';
+      } else {
+        tableLista.innerHTML = `
+          <table>
+            <thead>
+              <th>Número pedido</th>
+              <th>Número mesa</th>
+              <th>Comidas</th>
+              <th>Quantidade comidas</th>
+              <th>Bebidas</th>
+              <th>Quantidade Bebidas</th>
+              <th>Valor total</th>
+              <th>Excluir</th>
+            </thead>
+            <tbody>
+              ${
+                dadosPedido.map(pedido => {
+                  return `
+                    <tr>
+                      <td>${pedido.numeroPedido}</td>
+                      <td>${pedido.numeroMesa ? pedido.numeroMesa : '-'}</td>
+                      <td>${pedido.comidas ? buscarNomeComida(pedido.comidas) : '-'}</td>
+                      <td>${pedido.quantidadeComidas ? pedido.quantidadeComidas.split(',').join(', ') : '-'}</td>
+                      <td>${pedido.bebidas ? buscarNomeBebida(pedido.bebidas) : '-'}</td>
+                      <td>${pedido.quantidadeBebidas ? pedido.quantidadeBebidas.split(',').join(', ') : '-'}</td>
+                      <td>${pedido.quantidadeBebidas ? 'R$ ' + calcularTotalPedido(pedido) : '-'}</td>
+                      <td onClick="excluirPedido(${pedido.numeroPedido})">X</td>
+                    </tr>
+                  `
+                }).join('')
+              }
+            </tbody>
+          </table>
+        `
+      }
+    }
+
+    renderizarTabela()
+  </script>
+  </body>
+</html>

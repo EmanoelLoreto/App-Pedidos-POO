@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="../Index.js"></script>
+  <link rel="stylesheet" href="CardapioComidas.css">
+  <title>App de Pedidos</title>
+</head>
+<body>
+  <div class="content">
+    <header>
+      <div class="div-nome-header">Cardápio de comida</div>
+      <nav>
+        <ul>
+          <a href="/AppPedidos/Cardapios/CardapioComidas.html">cardápio de comida</a>
+          <a href="/AppPedidos/Cardapios/CardapioBebidas.html">cardápio de bebida</a>
+          <a href="/AppPedidos/Cadastros/CadastroComidas.html">cadastros</a>
+        </ul>
+      </nav>
+      <a href="/AppPedidos/ListaPedidos/ListaPedidos.html" class="a-pedido">pedidos</a>
+    </header>
+
+    <main>
+      <div id="table-cardapio-comida" />
+    </main>
+
+    <footer />
+  </div>
+  <script>
+    function excluirComida(codigo) {
+      let dadosComida = JSON.parse(localStorage.getItem("dadosComida"));
+
+      const indexComida = dadosComida.findIndex(comida => comida.codigo == codigo);
+      if (indexComida > -1) {
+        dadosComida.splice(indexComida, 1);
+        localStorage.setItem("dadosComida", JSON.stringify(dadosComida));
+        alert("Comida removida com sucesso!");
+        renderizarTabela()
+      }
+    }
+
+    function renderizarTabela() {
+      const tableCardapio = document.getElementById('table-cardapio-comida');
+      const dadosComida = JSON.parse(localStorage.getItem('dadosComida'));
+
+      if (dadosComida === null || dadosComida.length === 0) {
+        tableCardapio.innerHTML = '<h1>Não há nada no cardápio.</h1>'
+        document.getElementsByTagName('main')[0].style.justifyContent = 'center';
+      } else {
+        tableCardapio.innerHTML = `
+          <table>
+            <thead>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Valor unitário</th>
+              <th>Data de validade</th>
+              <th>Peso</th>
+              <th>Tipo</th>
+              <th>Excluir</th>
+            </thead>
+            <tbody>
+              ${
+                dadosComida.map(comida => {
+                  return `
+                    <tr>
+                      <td>${comida.codigo}</td>
+                      <td>${comida.nome ? comida.nome : '-'}</td>
+                      <td>${comida.descricao ? comida.descricao : '-'}</td>
+                      <td>${comida.valorUnitario ? 'R$ ' + comida.valorUnitario : '-'}</td>
+                      <td>${comida.dataValidade ? comida.dataValidade : '-'}</td>
+                      <td>${comida.peso ? comida.peso + 'Kg' : '-'}</td>
+                      <td>${comida.tipo ? comida.tipo : '-'}</td>
+                      <td onClick="excluirComida(${comida.codigo})">X</td>
+                    </tr>
+                  `
+                }).join('')
+              }
+            </tbody>
+          </table>
+        `
+      }
+    }
+
+    renderizarTabela()
+  </script>
+</body>
+</html>

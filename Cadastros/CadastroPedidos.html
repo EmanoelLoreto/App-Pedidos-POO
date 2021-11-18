@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module" src="../Index.js"></script>
+  <link rel="stylesheet" href="CadastroPedidos.css">
+  <title>App de Pedidos</title>
+</head>
+<body>
+  <div class="content">
+    <header>
+      <div class="div-nome-header">Cadastro de pedido</div>
+      <nav>
+        <ul>
+          <a href="/AppPedidos/Cadastros/CadastroComidas.html">cadastro de comida</a>
+          <a href="/AppPedidos/Cadastros/CadastroBebidas.html">cadastro de bebida</a>
+          <a href="/AppPedidos/Cadastros/CadastroPedidos.html">cadastro de pedido</a>
+          <a href="/AppPedidos/Cardapios/CardapioComidas.html">cardárpios</a>
+        </ul>
+      </nav>
+      <a href="/AppPedidos/ListaPedidos/ListaPedidos.html" class="a-pedido">pedidos</a>
+    </header>
+
+    <main>
+      <form action="" id="form-cadastro">
+        <label for="numeroPedido">Número pedido:</label>
+        <input type="number" id="numeroPedido" required disabled placeholder="Informe o número do pedido">
+        
+        <label for="numeroMesa">Número mesa:</label>
+        <input type="number" id="numeroMesa" required placeholder="Informe o número da mesa">
+
+        <label for="comidas">Comidas:</label>
+        <input type="text" id="comidas" required placeholder="Informe o codigo dos produtos, seperados por virgula. ex: 1, 2, 3...">
+
+        <label for="quantidadesComidas">Quantidades comidas:</label>
+        <input type="text" id="quantidadesComidas" required placeholder="Informe a quantidades dos produtos, seperados por virgula. ex: 1, 2, 3...">
+
+        <label for="bebidas">Bebidas:</label>
+        <input type="text" id="bebidas" required placeholder="Informe o codigo dos produtos, seperados por virgula. ex: 1, 2, 3...">
+
+        <label for="quantitadesBebidas">Quantidades bebidas:</label>
+        <input type="text" id="quantitadesBebidas" required placeholder="Informe a quantidades dos produtos, seperados por virgula. ex: 1, 2, 3...">
+      </form>
+    </main>
+
+    <footer>
+      <button id="cadastrarPedidos" type="button" class="button-cadastrar">Cadastrar</button>
+    </footer>
+  </div>
+
+  <script>
+    const dadosPedido = JSON.parse(localStorage.getItem('dadosPedido'));
+
+    let lastIndex = 0;
+    if (dadosPedido !== null && dadosPedido.length > 0) {
+      dadosPedido.forEach((pedido) => {
+        lastIndex = Number(pedido.numeroPedido ? pedido.numeroPedido : 0) + 1;
+      })
+      document.getElementById('numeroPedido').value = lastIndex;
+    } else {
+      document.getElementById('numeroPedido').value = 1;
+    }
+    
+  </script>
+
+</body>
+</html>

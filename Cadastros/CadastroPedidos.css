@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 920px;
+  
+  background: linear-gradient(235deg, #15d7ff, #e700ff);
+  background-size: 400% 400%;
+  -webkit-animation: AnimationName 41s ease infinite;
+  -moz-animation: AnimationName 41s ease infinite;
+  animation: AnimationName 41s ease infinite;
+}
+
+@-webkit-keyframes body {
+  0%{background-position:0% 88%}
+  50%{background-position:100% 13%}
+  100%{background-position:0% 88%}
+}
+@-moz-keyframes body {
+  0%{background-position:0% 88%}
+  50%{background-position:100% 13%}
+  100%{background-position:0% 88%}
+}
+@keyframes body {
+  0%{background-position:0% 88%}
+  50%{background-position:100% 13%}
+  100%{background-position:0% 88%}
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 3fr;
+  grid-template-rows: 10vh 65vh 10vh;
+  grid-template-areas: 
+  "header"
+  "main"
+  "footer";
+  width: 90vw;
+  min-width: 920px;
+}
+
+header {
+  grid-area: header;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 50px 50px 0px 0px;
+}
+
+.div-nome-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 20px;
+  pointer-events: none;
+}
+
+header > nav > ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  gap: .8rem;
+}
+
+nav > ul > a {
+  text-decoration: none;
+  color: black;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+nav > ul > a:nth-child(3) {
+  color: #7568EF;
+  font-weight: bold;
+  background-color: rgb(164, 162, 181, 8%);
+  padding: 5px;
+  border-radius: 8px;
+}
+
+nav > ul > a:hover {
+  color: #7568EF;
+  font-weight: bold;
+  background-color: rgb(164, 162, 181, 8%);
+  padding: 5px;
+  border-radius: 8px;
+}
+
+nav > ul > a:nth-child(4) {
+  border-bottom: 1px solid #7568EF;
+}
+
+.a-pedido {
+  text-decoration: none;
+  color: white;
+  padding: 8px;
+  background-color: #7568EF;
+  border-radius: 8px;
+  margin-right: 20px;
+  box-shadow: 0px 0px 15px 0px rgb(211, 211, 211);
+  transition: background-color 0.2s ease;
+}
+
+.a-pedido:hover, .button-cadastrar:hover {
+  background-color: #67548d;
+}
+
+.button-cadastrar {
+  color: white;
+  padding: 8px;
+  background-color: #7568EF;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  border: none;
+  height: 40px;
+  font-size: 20px;
+  width: 30%;
+}
+
+main {
+  grid-area: main;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  min-width: 480px;
+  background-color: #9072eb;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+form > label {
+  color: white;
+  font-size: 18px;
+}
+
+form > input {
+  margin-bottom: 15px;
+  padding: 3px;
+}
+
+footer {
+  grid-area: footer;
+  background-color: #fff;
+  border-radius: 0px 0px 50px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

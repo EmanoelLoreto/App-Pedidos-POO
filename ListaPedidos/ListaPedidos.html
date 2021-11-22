@@ -49,12 +49,16 @@
       if (codigos.split(',').length > 1) {
         let nomes = [];
         codigos.split(',').forEach(elementCodigo => {
-          nomes.push(dadosComida.find((elementComida) => elementComida.codigo === elementCodigo).nome)
+          const element = dadosComida.find((elementComida) => elementComida.codigo === elementCodigo);
+          if (element != null) {
+            nomes.push(element.nome)
+          }
         });
 
         return nomes.join(', ')
       } else {
-        return dadosComida.find((element) => element.codigo === codigos).nome
+        const element = dadosComida.find((element) => element.codigo === codigos);
+        return element ? element.nome : '-'
       }
     }
 
@@ -62,24 +66,34 @@
       if (codigos.split(',').length > 1) {
         let nomes = [];
         codigos.split(',').forEach(elementCodigo => {
-          nomes.push(dadosBebida.find((elementBebida) => elementBebida.codigo === elementCodigo).nome)
+          const element = dadosBebida.find((elementBebida) => elementBebida.codigo === elementCodigo);
+          if (element != null) {
+            nomes.push(element.nome)
+          }
         });
 
         return nomes.join(', ')
       } else {
-        return dadosBebida.find((element) => element.codigo === codigos).nome
+        const element = dadosBebida.find((element) => element.codigo === codigos);
+        return element ? element.nome : '-'
       }
     }
 
     function calcularTotalPedido(pedido) {
       let totalComidas = 0;
       pedido.comidas.split(',').forEach((elementCodigo, index) => {
-        totalComidas += Number(dadosComida.find((elementComida) => elementComida.codigo === elementCodigo).valorUnitario) * Number(pedido.quantidadeComidas.split(',')[index])
+        let element = dadosComida.find((elementComida) => elementComida.codigo === elementCodigo);
+        if (element != null) {
+          totalComidas += Number(element.valorUnitario) * Number(pedido.quantidadeComidas.split(',')[index])
+        }
       })
 
       let totalBebidas = 0;
       pedido.bebidas.split(',').forEach((elementCodigo, index) => {
-        totalBebidas += Number(dadosBebida.find((elementBebida) => elementBebida.codigo === elementCodigo).valorUnitario) * Number(pedido.quantidadeBebidas.split(',')[index])
+        let element = dadosBebida.find((elementBebida) => elementBebida.codigo === elementCodigo);
+        if (element != null) {
+          totalBebidas += Number(element.valorUnitario) * Number(pedido.quantidadeBebidas.split(',')[index])
+        }
       })
 
       return parseFloat(totalComidas + totalBebidas);
